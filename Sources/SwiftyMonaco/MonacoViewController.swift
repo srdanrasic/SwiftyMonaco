@@ -108,18 +108,7 @@ public class MonacoViewController: ViewController, WKUIDelegate, WKNavigationDel
           result in
           switch result {
           case .failure(let error):
-            #if os(macOS)
-            let alert = NSAlert()
-            alert.messageText = "Error"
-            alert.informativeText = "Something went wrong while evaluating \(error.localizedDescription): \(javascript)"
-            alert.alertStyle = .critical
-            alert.addButton(withTitle: "OK")
-            alert.runModal()
-            #else
-            let alert = UIAlertController(title: "Error", message: "Something went wrong while evaluating \(error.localizedDescription)", preferredStyle: .alert)
-            alert.addAction(.init(title: "OK", style: .default, handler: nil))
-            self.present(alert, animated: true, completion: nil)
-            #endif
+            print(error)
             break
           case .success(_):
             break
