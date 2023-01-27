@@ -133,7 +133,7 @@ private extension MonacoViewController {
             ) {
             guard let encodedText = message.body as? String,
             let data = Data(base64Encoded: encodedText),
-            let text = String(data: data, encoding: .utf8) else {
+            let text = String(data: data, encoding: .ascii) else {
                 fatalError("Unexpected message body")
             }
 
