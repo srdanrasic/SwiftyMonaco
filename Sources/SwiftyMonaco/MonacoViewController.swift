@@ -90,11 +90,13 @@ public class MonacoViewController: ViewController, WKUIDelegate, WKNavigationDel
     // MARK: - WKWebView
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // Code itself
-        let text = self.delegate?.monacoView(readText: self) ?? ""
-        let b64 = text.data(using: .utf8)?.base64EncodedString()
+        var text = self.delegate?.monacoView(readText: self) ?? ""
+        if #available(macOS 13.0, *) {
+            text.replace("\\", with: "\\\\")
+        }
         let javascript =
         """
-        editor.getModel().setValue(atob('\(b64 ?? "")'));
+        editor.getModel().setValue('\(text)');
         editor.getAction('editor.action.formatDocument').run()
         editor.updateOptions({
             lineNumbers: 'on'
@@ -131,9 +133,7 @@ private extension MonacoViewController {
             _ userContentController: WKUserContentController,
             didReceive message: WKScriptMessage
             ) {
-            guard let encodedText = message.body as? String,
-            let data = Data(base64Encoded: encodedText),
-            let text = String(data: data, encoding: .ascii) else {
+            guard let text = message.body as? String else {
                 fatalError("Unexpected message body")
             }
 

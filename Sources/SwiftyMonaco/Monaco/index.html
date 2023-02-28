@@ -22,7 +22,7 @@
 				});
                 editor.onDidChangeModelContent((event) => {
                     var text = this.editor.getValue();
-                    window.webkit.messageHandlers.updateText.postMessage(btoa(text));
+                    window.webkit.messageHandlers.updateText.postMessage(text);
                 });
                 window.editor = editor;
 			});
