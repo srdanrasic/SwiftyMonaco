@@ -91,9 +91,7 @@ public class MonacoViewController: ViewController, WKUIDelegate, WKNavigationDel
     public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         // Code itself
         var text = self.delegate?.monacoView(readText: self) ?? ""
-        if #available(macOS 13.0, *) {
-            text.replace("\\", with: "\\\\")
-        }
+        text = text.replacingOccurrences(of: "\\", with: "\\\\")
         let javascript =
         """
         editor.getModel().setValue('\(text)');
